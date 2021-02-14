@@ -27,12 +27,11 @@ https://bintray.com/lapism/maven/search
  - targetSdkVersion = 30
  - Java = 1.8
  - Kotlin = 1.8
- - Gradle = 4.1.0
 
 Add the dependency to your gradle file:
 ```groovy
 dependencies {
-    implementation 'com.lapism:search:2.4.1@aar'
+    implementation 'com.lapism:search:3.0.0@aar'
 }
 ```
 
@@ -102,6 +101,8 @@ dependencies {
 Also you can use classes SearchBehavior and SearchArrowDrawable.
 
 ### Layout
+You must use Theme.MaterialComponents for your app theme.
+
 It must be in the CoordinatorLayout.
 Also add android:stateListAnimator="@null" to the AppBarLayout.
 
@@ -163,6 +164,14 @@ Also add android:stateListAnimator="@null" to the AppBarLayout.
 ```
 
 ## Changelog
+**3.0.0**
+- not fully compatible with 2.4.1
+- added new method MaterialSearchView.getNavigationIconImageDrawable()
+- setShadowColor = setScrimColor
+- migrated to MaterialToolbar as root component
+- removed Mic methods
+- removed Menu methods
+
 **2.4.1**
 - changed STATE_HAMBURGER to MENU in SearchArrowDrawable
 - changed STATE_ARROW to ARROW in SearchArrowDrawable

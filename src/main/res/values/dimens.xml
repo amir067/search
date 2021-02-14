@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="search_dp_16">16dp</dimen>
-    <dimen name="search_sp_16">16sp</dimen>
-    <dimen name="search_icon_48">48dp</dimen>
-    <dimen name="search_icon_56">56dp</dimen>
+    <!-- search -->
     <dimen name="search_divider">1dp</dimen>
     <dimen name="search_stroke_width">1dp</dimen>
     <dimen name="search_stroke_width_focus">0dp</dimen>
@@ -17,5 +14,19 @@
     <dimen name="search_margins_left_right">16dp</dimen>
     <dimen name="search_margins_top_bottom">8dp</dimen>
     <dimen name="search_margins_focus">0dp</dimen>
+
+    <!-- search2 -->
+    <dimen name="search_dp_16">16dp</dimen>
+    <dimen name="search_sp_16">16sp</dimen>
+    <dimen name="search_icon_48">48dp</dimen>
+    <dimen name="search_icon_56">56dp</dimen>
+    <dimen name="search_bar_height">48dp</dimen>
+    <dimen name="search_bar_radius">8dp</dimen>
+    <dimen name="search_bar_elevation">3dp</dimen>
+    <dimen name="search_bar_margins_start_end">16dp</dimen>
+    <dimen name="search_bar_margins_top_bottom">8dp</dimen>
+    <dimen name="search_view_height">56dp</dimen>
+    <dimen name="search_view_divider_height">1dp</dimen>
+    <dimen name="search_view_stroke_width">1dp</dimen>
 
 </resources>
