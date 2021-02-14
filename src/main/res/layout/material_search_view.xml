@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <View
+        android:id="@+id/search_view_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.0"
+        android:background="?scrimBackground" />
+
+    <com.lapism.search2.internal.ClippableRoundedCornerLayout
+        android:id="@+id/search_view_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/search_view_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/search_view_toolbar"
+                style="@style/Widget.GoogleMaterial.OpenSearchView.Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.lapism.search2.internal.SearchText
+                        android:id="@+id/search_view_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:autofillHints="@null"
+                        android:background="@null"
+                        android:gravity="start|center_vertical"
+                        android:hint="@null"
+                        android:imeOptions="actionSearch|flagNoExtractUi"
+                        android:inputType="textNoSuggestions"
+                        android:privateImeOptions="nm"
+                        android:textDirection="firstStrong" />
+
+                    <ImageButton
+                        android:id="@+id/search_view_clear_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?actionBarItemBackground"
+                        android:contentDescription="@null"
+                        android:padding="16dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <View
+                android:id="@+id/search_view_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_view_divider_height"
+                android:background="?android:attr/listDivider" />
+
+            <com.lapism.search2.internal.TouchObserverFrameLayout
+                android:id="@+id/search_view_content_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </com.lapism.search2.internal.ClippableRoundedCornerLayout>
+
+</merge>
+
+
+    <!--android:singleLine="true"
+    android:textAlignment="viewStart"
+    android:maxLines="1"
+    android:textSize="@dimen/search_sp_16"
+    android:windowSoftInputMode="stateAlwaysHidden|adjustPan|adjustNothing" />-->
+
+    <!-- <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/search_recycler_view"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:overScrollMode="never" />-->

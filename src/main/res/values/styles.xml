@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.GoogleMaterial.OpenSearchView" parent="@android:style/Widget">
+        <item name="android:textAppearance">@style/TextAppearance.GoogleMaterial.OpenSearchView
+        </item>
+        <item name="android:elevation">6dp</item>
+        <item name="enforceMaterialTheme">true</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.GoogleMaterial.OpenSearch</item>
+    </style>
+
+    <style name="ThemeOverlay.GoogleMaterial.OpenSearch" parent="">
+        <item name="actionMenuTextColor">@android:color/holo_red_dark</item>
+        <item name="actionOverflowButtonStyle">@style/Widget.GoogleMaterial.OpenSearch.ActionButton.Overflow
+        </item>
+        <item name="colorControlNormal">@android:color/holo_red_dark</item>
+        <item name="toolbarNavigationButtonStyle">
+            @style/Widget.GoogleMaterial.OpenSearch.Toolbar.Button.Navigation
+        </item>
+    </style>
+
+    <style name="Widget.GoogleMaterial.OpenSearch.ActionButton.Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:minWidth">48dp</item>
+    </style>
+
+    <style name="Widget.GoogleMaterial.OpenSearch.Toolbar.Button.Navigation" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    </style>
+
+    <style name="Widget.GoogleMaterial.OpenSearchBar" parent="@android:style/Widget">
+        <item name="android:textAppearance">@style/TextAppearance.GoogleMaterial.OpenSearchBar
+        </item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="elevation">3dp</item>
+        <item name="enforceMaterialTheme">true</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.GoogleMaterial.OpenSearch</item>
+        <item name="maxButtonHeight">48dp</item>
+    </style>
+
+    <style name="TextAppearance.GoogleMaterial.OpenSearchBar" parent="@style/Base.TextAppearance.GoogleMaterial.OpenSearch" />
+    <style name="TextAppearance.GoogleMaterial.OpenSearchView" parent="@style/Base.TextAppearance.GoogleMaterial.OpenSearch" />
+
+    <style name="Base.TextAppearance.GoogleMaterial.OpenSearch" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textColorHint">@android:color/holo_red_dark</item>
+    </style>
+
+    <style name="Widget.GoogleMaterial.OpenSearchView.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="navigationIconTint">?colorOnSurface</item>
+        <item name="navigationContentDescription">@null</item>
+    </style>
+
+</resources>
