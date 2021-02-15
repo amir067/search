@@ -1,4 +1,4 @@
-package com.lapism.search2.internal
+package com.lapism
 
 import android.app.Activity
 import android.content.Context

@@ -29,4 +29,21 @@
     <dimen name="search_view_divider_height">1dp</dimen>
     <dimen name="search_view_stroke_width">1dp</dimen>
 
+
+
+    <dimen name="open_search_bar_horizontal_margin">16.0dip</dimen>
+    <dimen name="open_search_bar_vertical_margin">8.0dip</dimen>
+
+    <dimen name="google_opensearchbar_elevation">3.0dip</dimen>
+    <dimen name="google_opensearchbar_height">48.0dip</dimen>
+    <dimen name="google_opensearchbar_margin_horizontal">16.0dip</dimen>
+    <dimen name="google_opensearchbar_margin_vertical">8.0dip</dimen>
+    <dimen name="google_opensearchbar_padding_start">4.0dip</dimen>
+    <dimen name="google_opensearchbar_radius">8.0dip</dimen>
+    <dimen name="google_opensearchbar_text_margin_start_no_navigation_icon">16.0dip</dimen>
+    <dimen name="google_opensearchbar_text_size">16.0sp</dimen>
+
+    <dimen name="google_opensearchview_divider_size">1.0dip</dimen>
+    <dimen name="google_opensearchview_elevation">6.0dip</dimen>
+
 </resources>

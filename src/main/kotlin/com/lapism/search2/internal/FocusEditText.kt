@@ -9,14 +9,16 @@ import androidx.appcompat.widget.AppCompatEditText
  * @hide
  */
 // @RestrictTo(RestrictTo.Scope.LIBRARY) TODO
-class SearchText @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+class FocusEditText @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : AppCompatEditText(context, attrs, defStyleAttr) {
 
     private var clearFocusOnBackPressed: Boolean = false
 
-    override fun onKeyPreIme(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP && clearFocusOnBackPressed) {
+    override fun onKeyPreIme(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event?.action == KeyEvent.ACTION_UP && clearFocusOnBackPressed) {
             if (hasFocus()) {
                 clearFocus()
                 return true

@@ -1,14 +1,15 @@
-package com.lapism.search2.internal
+package com.lapism
 
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.Property
+import android.util.TypedValue
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.content.ContextCompat
+import com.lapism.search.R
 
 
-@Suppress("unused")
 class MenuArrowDrawable constructor(context: Context) : DrawerArrowDrawable(context) {
 
     // *********************************************************************************************
@@ -21,7 +22,13 @@ class MenuArrowDrawable constructor(context: Context) : DrawerArrowDrawable(cont
     // *********************************************************************************************
     init {
         color = ContextCompat.getColor(context, android.R.color.white)
-        // TODO android:tint="?attr/colorControlNormal"
+
+        val typedValue = TypedValue()
+        val theme = context.theme
+        theme.resolveAttribute(R.attr.colorControlNormal, typedValue, true)
+        val c = ContextCompat.getColor(context, typedValue.resourceId)
+
+        color = c
     }
 
     // *********************************************************************************************

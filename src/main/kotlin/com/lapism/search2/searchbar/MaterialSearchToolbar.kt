@@ -7,10 +7,11 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
-import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.AttrRes
 import com.google.android.material.appbar.MaterialToolbar
 import com.lapism.search.R
+import com.lapism.search2.internal.FocusEditText
 
 
 class MaterialSearchToolbar : MaterialToolbar {
@@ -21,7 +22,7 @@ class MaterialSearchToolbar : MaterialToolbar {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
@@ -55,7 +56,7 @@ class MaterialSearchToolbar : MaterialToolbar {
 
     override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo?) {
         super.onInitializeAccessibilityNodeInfo(info)
-        info?.className = EditText::class.java.canonicalName
+        info?.className = FocusEditText::class.java.canonicalName
         var h: CharSequence? = getText()
         val isEmpty = TextUtils.isEmpty(h)
         if (Build.VERSION.SDK_INT >= 26) {
@@ -84,7 +85,7 @@ class MaterialSearchToolbar : MaterialToolbar {
         return textView?.text
     }
 
-    fun setHint(hint: CharSequence){
+    fun setHint(hint: CharSequence) {
         textView?.hint = hint
     }
 

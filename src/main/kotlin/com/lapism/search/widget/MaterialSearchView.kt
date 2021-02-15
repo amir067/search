@@ -9,19 +9,19 @@ import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.lapism.search.R
-import com.lapism.search.internal.SearchLayout
+import com.lapism.search.internal.MaterialSearchLayout
 
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 class MaterialSearchView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-) : SearchLayout(context, attrs, defStyleAttr, defStyleRes), CoordinatorLayout.AttachedBehavior {
+) : MaterialSearchLayout(context, attrs, defStyleAttr, defStyleRes),
+    CoordinatorLayout.AttachedBehavior {
 
     // *********************************************************************************************
-    private var mBehavior: CoordinatorLayout.Behavior<*> = SearchBehavior<MaterialSearchView>()
+    private var mBehavior: CoordinatorLayout.Behavior<*> = Behavior<MaterialSearchView>()
     private var mTransition: LayoutTransition? = null
     private var mStrokeWidth: Int = 0
     private var mRadius: Float = 0f
@@ -29,7 +29,7 @@ class MaterialSearchView @JvmOverloads constructor(
 
     // *********************************************************************************************
     init {
-        inflate(context, R.layout.search_view, this)
+        View.inflate(context, R.layout.search_view, this)
         init()
         setTransition()
 
@@ -74,13 +74,14 @@ class MaterialSearchView @JvmOverloads constructor(
             setDividerColor(a.getInt(R.styleable.MaterialSearchView_search_dividerColor, 0))
         }
 
-        val defaultShadowColor = ContextCompat.getColor(context, R.color.search_shadow)
-        setShadowColor(
-            a.getInt(
-                R.styleable.MaterialSearchView_search_shadowColor,
-                defaultShadowColor
+        if (a.hasValue(R.styleable.MaterialSearchView_search_scrimColor)) {
+            setScrimColor(
+                a.getInt(
+                    R.styleable.MaterialSearchView_search_scrimColor,
+                    0
+                )
             )
-        )
+        }
 
         if (a.hasValue(R.styleable.MaterialSearchView_search_textHint)) {
             setTextHint(a.getText(R.styleable.MaterialSearchView_search_textHint))
@@ -140,16 +141,15 @@ class MaterialSearchView @JvmOverloads constructor(
             context.resources.getDimensionPixelSize(R.dimen.search_elevation_focus).toFloat()
 
         val left = context.resources.getDimensionPixelSize(R.dimen.search_dp_16)
-        val params = mSearchEditText?.layoutParams as LinearLayout.LayoutParams
+        val params = edittext?.layoutParams as LinearLayout.LayoutParams
         params.setMargins(left, 0, 0, 0)
-        mSearchEditText?.layoutParams = params
+        edittext?.layoutParams = params
 
         margins = Margins.FOCUS
         setLayoutHeight(context.resources.getDimensionPixelSize(R.dimen.search_layout_height_focus))
 
-        mViewShadow?.visibility = View.VISIBLE
-
-        mViewDivider?.visibility = View.VISIBLE
+        scrim?.visibility = View.VISIBLE
+        divider?.visibility = View.VISIBLE
         mViewAnim?.visibility = View.VISIBLE
         mRecyclerView?.visibility = View.VISIBLE
 
@@ -162,9 +162,9 @@ class MaterialSearchView @JvmOverloads constructor(
         mOnFocusChangeListener?.onFocusChange(false)
         hideKeyboard()
 
-        val params = mSearchEditText?.layoutParams as LinearLayout.LayoutParams
+        val params = edittext?.layoutParams as LinearLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
-        mSearchEditText?.layoutParams = params
+        edittext?.layoutParams = params
 
         setBackgroundStrokeWidth(mStrokeWidth)
         setBackgroundRadius(mRadius)
@@ -173,11 +173,10 @@ class MaterialSearchView @JvmOverloads constructor(
         setLayoutHeight(context.resources.getDimensionPixelSize(R.dimen.search_layout_height))
         margins = Margins.NO_FOCUS
 
-        mViewShadow?.visibility = View.GONE
-
+        scrim?.visibility = View.GONE
         mRecyclerView?.visibility = View.GONE
         mViewAnim?.visibility = View.GONE
-        mViewDivider?.visibility = View.GONE
+        divider?.visibility = View.GONE
     }
 
     override fun getBehavior(): CoordinatorLayout.Behavior<*> {

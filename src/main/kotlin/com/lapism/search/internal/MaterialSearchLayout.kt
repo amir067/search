@@ -25,10 +25,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.lapism.search.R
+import com.lapism.search.widget.SavedState
+import com.lapism.search2.internal.FocusEditText
 
-
-@Suppress("unused")
-abstract class SearchLayout @JvmOverloads constructor(
+/**
+ * @hide
+ */
+// @RestrictTo(RestrictTo.Scope.LIBRARY) TODO
+abstract class MaterialSearchLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -69,15 +73,15 @@ abstract class SearchLayout @JvmOverloads constructor(
     private var mImageViewMic: ImageButton? = null
     protected var mRecyclerView: RecyclerView? = null
     private var mMaterialCardView: MaterialCardView? = null
-    var mSearchEditText: SearchEditText? = null
-    protected var mViewShadow: View? = null
-    protected var mViewDivider: View? = null
+    protected var edittext: FocusEditText? = null
+    protected var scrim: View? = null
+    protected var divider: View? = null
     protected var mViewAnim: View? = null
-    protected var mOnFocusChangeListener: OnFocusChangeListener? = null
-
     private var mLinearLayout: LinearLayout? = null
     private var mImageViewNavigation: ImageButton? = null
     private var mImageViewClear: ImageButton? = null
+
+    protected var mOnFocusChangeListener: OnFocusChangeListener? = null
     private var mOnQueryTextListener: OnQueryTextListener? = null
     private var mOnNavigationClickListener: OnNavigationClickListener? = null
     private var mOnMicClickListener: OnMicClickListener? = null
@@ -187,25 +191,25 @@ abstract class SearchLayout @JvmOverloads constructor(
         mImageViewClear?.visibility = View.GONE
         mImageViewClear?.setOnClickListener(this)
 
-        mSearchEditText = findViewById(R.id.search_search_edit_text)
-        mSearchEditText?.addTextChangedListener(object : TextWatcher {
+        edittext = findViewById(R.id.search_search_edit_text)
+        edittext?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                this@SearchLayout.onTextChanged(s)
+                this@MaterialSearchLayout.onTextChanged(s)
             }
 
             override fun afterTextChanged(s: Editable?) {
 
             }
         })
-        mSearchEditText?.setOnEditorActionListener { _, _, _ ->
+        edittext?.setOnEditorActionListener { _, _, _ ->
             onSubmitQuery()
             return@setOnEditorActionListener true // true
         }
-        mSearchEditText?.setOnFocusChangeListener { _, hasFocus ->
+        edittext?.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 addFocus()
             } else {
@@ -228,11 +232,11 @@ abstract class SearchLayout @JvmOverloads constructor(
             }
         })
 
-        mViewShadow = findViewById(R.id.search_view_shadow)
-        mViewShadow?.visibility = View.GONE
+        scrim = findViewById(R.id.search_view_shadow)
+        scrim?.visibility = View.GONE
 
-        mViewDivider = findViewById(R.id.search_view_divider)
-        mViewDivider?.visibility = View.GONE
+        divider = findViewById(R.id.search_view_divider)
+        divider?.visibility = View.GONE
 
         mViewAnim = findViewById(R.id.search_view_anim)
         mViewAnim?.visibility = View.GONE
@@ -240,7 +244,7 @@ abstract class SearchLayout @JvmOverloads constructor(
         mMaterialCardView = findViewById(R.id.search_material_card_view)
         margins = Margins.NO_FOCUS
 
-        isClickable = true
+        // isClickable = true
         isFocusable = true
         isFocusableInTouchMode = true
     }
@@ -256,6 +260,10 @@ abstract class SearchLayout @JvmOverloads constructor(
 
     fun setNavigationIconImageDrawable(@Nullable drawable: Drawable?) {
         mImageViewNavigation?.setImageDrawable(drawable)
+    }
+
+    fun getNavigationIconImageDrawable(): Drawable? {
+        return mImageViewNavigation?.drawable
     }
 
     fun setNavigationIconColorFilter(color: Int) {
@@ -379,33 +387,33 @@ abstract class SearchLayout @JvmOverloads constructor(
      * Typeface.create(Typeface.NORMAL, Typeface.DEFAULT)
      */
     fun setTextTypeface(@Nullable tf: Typeface?) {
-        mSearchEditText?.typeface = tf
+        edittext?.typeface = tf
     }
 
     fun getTextTypeface(): Typeface? {
-        return mSearchEditText?.typeface
+        return edittext?.typeface
     }
 
     fun setTextInputType(type: Int) {
-        mSearchEditText?.inputType = type
+        edittext?.inputType = type
     }
 
     fun getTextInputType(): Int? {
-        return mSearchEditText?.inputType
+        return edittext?.inputType
     }
 
     fun setTextImeOptions(imeOptions: Int) {
-        mSearchEditText?.imeOptions = imeOptions
+        edittext?.imeOptions = imeOptions
     }
 
     fun getTextImeOptions(): Int? {
-        return mSearchEditText?.imeOptions
+        return edittext?.imeOptions
     }
 
     fun setTextQuery(query: CharSequence?, submit: Boolean) {
-        mSearchEditText?.setText(query)
+        edittext?.setText(query)
         if (query != null) {
-            mSearchEditText?.setSelection(mSearchEditText?.length()!!)
+            edittext?.setSelection(edittext?.length()!!)
         }
         if (submit && !TextUtils.isEmpty(query)) {
             onSubmitQuery()
@@ -414,39 +422,39 @@ abstract class SearchLayout @JvmOverloads constructor(
 
     @Nullable
     fun getTextQuery(): CharSequence? {
-        return mSearchEditText?.text
+        return edittext?.text
     }
 
     fun setTextHint(hint: CharSequence?) {
-        mSearchEditText?.hint = hint
+        edittext?.hint = hint
     }
 
     fun getTextHint(): CharSequence? {
-        return mSearchEditText?.hint
+        return edittext?.hint
     }
 
     fun setTextColor(@ColorInt color: Int) {
-        mSearchEditText?.setTextColor(color)
+        edittext?.setTextColor(color)
     }
 
     fun setTextSize(size: Float) {
-        mSearchEditText?.textSize = size
+        edittext?.textSize = size
     }
 
     fun setTextGravity(gravity: Int) {
-        mSearchEditText?.gravity = gravity
+        edittext?.gravity = gravity
     }
 
     fun setTextHint(@StringRes resid: Int) {
-        mSearchEditText?.setHint(resid)
+        edittext?.setHint(resid)
     }
 
     fun setTextHintColor(@ColorInt color: Int) {
-        mSearchEditText?.setHintTextColor(color)
+        edittext?.setHintTextColor(color)
     }
 
     fun setClearFocusOnBackPressed(clearFocusOnBackPressed: Boolean) {
-        mSearchEditText?.clearFocusOnBackPressed = clearFocusOnBackPressed
+        edittext?.setClearFocusOnBackPressed(clearFocusOnBackPressed)
     }
 
     // *********************************************************************************************
@@ -502,11 +510,11 @@ abstract class SearchLayout @JvmOverloads constructor(
 
     // *********************************************************************************************
     fun setDividerColor(@ColorInt color: Int) {
-        mViewDivider?.setBackgroundColor(color)
+        divider?.setBackgroundColor(color)
     }
 
-    fun setShadowColor(@ColorInt color: Int) {
-        mViewShadow?.setBackgroundColor(color)
+    fun setScrimColor(@ColorInt color: Int) {
+        scrim?.setBackgroundColor(color)
     }
 
     // *********************************************************************************************
@@ -536,7 +544,7 @@ abstract class SearchLayout @JvmOverloads constructor(
             val inputMethodManager =
                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(
-                mSearchEditText,
+                edittext,
                 InputMethodManager.RESULT_UNCHANGED_SHOWN
             )
         }
@@ -568,7 +576,7 @@ abstract class SearchLayout @JvmOverloads constructor(
             mImageViewClear?.visibility = View.VISIBLE
         } else {
             mImageViewClear?.visibility = View.GONE
-            if (mSearchEditText?.hasFocus()!!) {
+            if (edittext?.hasFocus()!!) {
                 mImageViewMic?.visibility = View.VISIBLE
             } else {
                 mImageViewMic?.visibility = View.GONE
@@ -581,10 +589,10 @@ abstract class SearchLayout @JvmOverloads constructor(
     }
 
     private fun onSubmitQuery() {
-        val query = mSearchEditText?.text
+        val query = edittext?.text
         if (query != null && TextUtils.getTrimmedLength(query) > 0) {
             if (mOnQueryTextListener == null || !mOnQueryTextListener!!.onQueryTextSubmit(query.toString())) {
-                mSearchEditText?.text = query
+                edittext?.text = query
             }
         }
     }
@@ -592,22 +600,22 @@ abstract class SearchLayout @JvmOverloads constructor(
     // *********************************************************************************************
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
-        val ss = SearchViewSavedState(superState!!)
-        if (mSearchEditText?.text!!.isNotEmpty()) {
-            ss.query = mSearchEditText?.text
+        val ss = SavedState(superState!!)
+        if (edittext?.text!!.isNotEmpty()) {
+            ss.query = edittext?.text
         }
-        ss.hasFocus = mSearchEditText?.hasFocus()!!
+        ss.hasFocus = edittext?.hasFocus()!!
         return ss
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        if (state !is SearchViewSavedState) {
+        if (state !is SavedState) {
             super.onRestoreInstanceState(state)
             return
         }
         super.onRestoreInstanceState(state.superState)
         if (state.hasFocus) {
-            mSearchEditText?.requestFocus()
+            edittext?.requestFocus()
         }
         if (state.query != null) {
             setTextQuery(state.query, false)
@@ -619,27 +627,28 @@ abstract class SearchLayout @JvmOverloads constructor(
         return if (!isFocusable) {
             false
         } else {
-            mSearchEditText?.requestFocus(direction, previouslyFocusedRect)!!
+            // fixme
+            edittext?.requestFocus(direction, previouslyFocusedRect)!!
         }
     }
 
     override fun clearFocus() {
         super.clearFocus()
-        mSearchEditText?.clearFocus()
+        edittext?.clearFocus()
     }
 
     override fun onClick(view: View?) {
         if (view === mImageViewNavigation) {
             if (mOnNavigationClickListener != null) {
-                mOnNavigationClickListener?.onNavigationClick(mSearchEditText?.hasFocus()!!)
+                mOnNavigationClickListener?.onNavigationClick(edittext?.hasFocus()!!)
             }
         } else if (view === mImageViewMic) {
             if (mOnMicClickListener != null) {
                 mOnMicClickListener?.onMicClick()
             }
         } else if (view === mImageViewClear) {
-            if (mSearchEditText?.text!!.isNotEmpty()) {
-                mSearchEditText?.text!!.clear()
+            if (edittext?.text!!.isNotEmpty()) {
+                edittext?.text!!.clear()
             }
             if (mOnClearClickListener != null) {
                 mOnClearClickListener?.onClearClick()

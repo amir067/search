@@ -6,6 +6,4 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 class Behavior : CoordinatorLayout.Behavior<MaterialSearchView>() {
 
 
-
-
 }

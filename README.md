@@ -165,11 +165,9 @@ Also add android:stateListAnimator="@null" to the AppBarLayout.
 
 ## Changelog
 **3.0.0**
-- not fully compatible with 2.4.1
+- added new package search2
 - added new method MaterialSearchView.getNavigationIconImageDrawable()
 - setShadowColor = setScrimColor
-- migrated to MaterialToolbar as root component
-- removed Mic methods
 - removed Menu methods
 
 **2.4.1**

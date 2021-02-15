@@ -1,17 +1,24 @@
-package com.lapism.search.internal
+package com.lapism.search.widget
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import android.view.View
-import androidx.annotation.RestrictTo
 
-/**
- * @hide
- */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
-internal class SearchViewSavedState(superState: Parcelable) : View.BaseSavedState(superState) {
 
+internal class SavedState(superState: Parcelable) : View.BaseSavedState(superState) {
+    /*    companion object {
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }*/
     // *********************************************************************************************
     var query: CharSequence? = null
     var hasFocus: Boolean = false

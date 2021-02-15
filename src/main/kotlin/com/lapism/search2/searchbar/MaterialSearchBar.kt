@@ -6,7 +6,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
+import androidx.annotation.Nullable
 import com.google.android.material.card.MaterialCardView
 import com.lapism.search.R
 
@@ -63,15 +65,25 @@ class MaterialSearchBar @JvmOverloads constructor(
         val customRadius = a.getInt(R.styleable.MaterialSearchBar_bar_radius, defaultRadius)
         setRadius(customRadius.toFloat())
 
-/*        val defaultRadius = context.resources.getDimensionPixelSize(R.dimen.search_bar)
-        setRadius(a.getInt(R.styleable.MaterialSearchBar_bar_strokeColor, defaultRadius).toFloat())
+        if (a.hasValue(R.styleable.MaterialSearchBar_bar_strokeColor)) {
+            val customStrokeColor = a.getInt(R.styleable.MaterialSearchBar_bar_strokeColor, 0)
+            setStrokeColor(customStrokeColor)
+        }
 
-        val defaultRadius = context.resources.getDimensionPixelSize(R.dimen.search_bar_radius)
-        setRadius(a.getInt(R.styleable.MaterialSearchBar_bar_strokeWidth, defaultRadius).toFloat())*/
-
-        // todo  + onclicklistener
+        if (a.hasValue(R.styleable.MaterialSearchBar_bar_strokeWidth)) {
+            val customStrokeWidth = a.getInt(R.styleable.MaterialSearchBar_bar_strokeWidth, 0)
+            setStrokeWidth(customStrokeWidth)
+        }
 
         a.recycle()
+    }
+
+    override fun setBackgroundColor(@ColorInt color: Int) {
+        card?.setCardBackgroundColor(color)
+    }
+
+    fun setBackgroundColor(@Nullable color: ColorStateList?) {
+        card?.setCardBackgroundColor(color)
     }
 
     override fun setElevation(elevation: Float) {
@@ -79,8 +91,24 @@ class MaterialSearchBar @JvmOverloads constructor(
         card?.maxCardElevation = elevation
     }
 
+    override fun getElevation(): Float {
+        return card?.elevation!!
+    }
+
     fun setRadius(radius: Float) {
         card?.radius = radius
+    }
+
+    fun getRadius(): Float {
+        return card?.radius!!
+    }
+
+    fun setRippleColorResource(@ColorRes rippleColorResourceId: Int) {
+        card?.setRippleColorResource(rippleColorResourceId)
+    }
+
+    fun setRippleColor(@Nullable rippleColor: ColorStateList?) {
+        card?.rippleColor = rippleColor
     }
 
     fun setStrokeColor(@ColorInt strokeColor: Int) {
@@ -95,14 +123,39 @@ class MaterialSearchBar @JvmOverloads constructor(
         card?.strokeWidth = strokeWidth
     }
 
+    @Dimension
+    fun getStrokeWidth(): Int {
+        return card?.strokeWidth!!
+    }
+
     fun setMargins(left: Int, top: Int, right: Int, bottom: Int) {
         val params = card?.layoutParams as LayoutParams?
         params?.setMargins(left, top, right, bottom)
         card?.layoutParams = params
     }
 
+    override fun setOnClickListener(l: OnClickListener?) {
+        toolbar?.setOnClickListener(l)
+    }
+
     fun getToolbar(): MaterialSearchToolbar? {
         return toolbar
+    }
+
+    fun setText(text: CharSequence) {
+        toolbar?.setText(text)
+    }
+
+    fun getText(): CharSequence? {
+        return toolbar?.getText()
+    }
+
+    fun setHint(hint: CharSequence) {
+        toolbar?.setHint(hint)
+    }
+
+    fun getHint(): CharSequence? {
+        return toolbar?.getHint()
     }
 
 }

@@ -6,10 +6,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.lapism.search.internal.SearchLayout
+import com.lapism.search.internal.MaterialSearchLayout
 
 
-class SearchBehavior<S : SearchLayout> : CoordinatorLayout.Behavior<S>() {
+class Behavior<S : MaterialSearchLayout> : CoordinatorLayout.Behavior<S>() {
 
     override fun layoutDependsOn(
         parent: CoordinatorLayout,
