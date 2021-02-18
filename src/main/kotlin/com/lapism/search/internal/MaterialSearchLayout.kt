@@ -7,6 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Parcel
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextUtils
@@ -20,18 +21,19 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
+import androidx.customview.view.AbsSavedState
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.lapism.search.R
-import com.lapism.search.widget.SavedState
 import com.lapism.search2.internal.FocusEditText
 
 /**
  * @hide
  */
 // @RestrictTo(RestrictTo.Scope.LIBRARY) TODO
+@Suppress("unused")
 abstract class MaterialSearchLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -73,7 +75,7 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
     private var mImageViewMic: ImageButton? = null
     protected var mRecyclerView: RecyclerView? = null
     private var mMaterialCardView: MaterialCardView? = null
-    protected var edittext: FocusEditText? = null
+    protected var editText: FocusEditText? = null
     protected var scrim: View? = null
     protected var divider: View? = null
     protected var mViewAnim: View? = null
@@ -191,8 +193,8 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         mImageViewClear?.visibility = View.GONE
         mImageViewClear?.setOnClickListener(this)
 
-        edittext = findViewById(R.id.search_search_edit_text)
-        edittext?.addTextChangedListener(object : TextWatcher {
+        editText = findViewById(R.id.search_search_edit_text)
+        editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
@@ -205,11 +207,11 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
 
             }
         })
-        edittext?.setOnEditorActionListener { _, _, _ ->
+        editText?.setOnEditorActionListener { _, _, _ ->
             onSubmitQuery()
             return@setOnEditorActionListener true // true
         }
-        edittext?.setOnFocusChangeListener { _, hasFocus ->
+        editText?.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 addFocus()
             } else {
@@ -244,7 +246,7 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         mMaterialCardView = findViewById(R.id.search_material_card_view)
         margins = Margins.NO_FOCUS
 
-        // isClickable = true
+        isClickable = true
         isFocusable = true
         isFocusableInTouchMode = true
     }
@@ -387,33 +389,33 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
      * Typeface.create(Typeface.NORMAL, Typeface.DEFAULT)
      */
     fun setTextTypeface(@Nullable tf: Typeface?) {
-        edittext?.typeface = tf
+        editText?.typeface = tf
     }
 
     fun getTextTypeface(): Typeface? {
-        return edittext?.typeface
+        return editText?.typeface
     }
 
     fun setTextInputType(type: Int) {
-        edittext?.inputType = type
+        editText?.inputType = type
     }
 
     fun getTextInputType(): Int? {
-        return edittext?.inputType
+        return editText?.inputType
     }
 
     fun setTextImeOptions(imeOptions: Int) {
-        edittext?.imeOptions = imeOptions
+        editText?.imeOptions = imeOptions
     }
 
     fun getTextImeOptions(): Int? {
-        return edittext?.imeOptions
+        return editText?.imeOptions
     }
 
     fun setTextQuery(query: CharSequence?, submit: Boolean) {
-        edittext?.setText(query)
+        editText?.setText(query)
         if (query != null) {
-            edittext?.setSelection(edittext?.length()!!)
+            editText?.setSelection(editText?.length()!!)
         }
         if (submit && !TextUtils.isEmpty(query)) {
             onSubmitQuery()
@@ -421,40 +423,40 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
     }
 
     @Nullable
-    fun getTextQuery(): CharSequence? {
-        return edittext?.text
+    fun getTextQuery(): Editable? {
+        return editText?.text
     }
 
     fun setTextHint(hint: CharSequence?) {
-        edittext?.hint = hint
+        editText?.hint = hint
     }
 
     fun getTextHint(): CharSequence? {
-        return edittext?.hint
+        return editText?.hint
     }
 
     fun setTextColor(@ColorInt color: Int) {
-        edittext?.setTextColor(color)
+        editText?.setTextColor(color)
     }
 
     fun setTextSize(size: Float) {
-        edittext?.textSize = size
+        editText?.textSize = size
     }
 
     fun setTextGravity(gravity: Int) {
-        edittext?.gravity = gravity
+        editText?.gravity = gravity
     }
 
     fun setTextHint(@StringRes resid: Int) {
-        edittext?.setHint(resid)
+        editText?.setHint(resid)
     }
 
     fun setTextHintColor(@ColorInt color: Int) {
-        edittext?.setHintTextColor(color)
+        editText?.setHintTextColor(color)
     }
 
     fun setClearFocusOnBackPressed(clearFocusOnBackPressed: Boolean) {
-        edittext?.setClearFocusOnBackPressed(clearFocusOnBackPressed)
+        editText?.setClearFocusOnBackPressed(clearFocusOnBackPressed)
     }
 
     // *********************************************************************************************
@@ -544,7 +546,7 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
             val inputMethodManager =
                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(
-                edittext,
+                editText,
                 InputMethodManager.RESULT_UNCHANGED_SHOWN
             )
         }
@@ -576,7 +578,7 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
             mImageViewClear?.visibility = View.VISIBLE
         } else {
             mImageViewClear?.visibility = View.GONE
-            if (edittext?.hasFocus()!!) {
+            if (editText?.hasFocus()!!) {
                 mImageViewMic?.visibility = View.VISIBLE
             } else {
                 mImageViewMic?.visibility = View.GONE
@@ -589,66 +591,61 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
     }
 
     private fun onSubmitQuery() {
-        val query = edittext?.text
+        val query = editText?.text
         if (query != null && TextUtils.getTrimmedLength(query) > 0) {
             if (mOnQueryTextListener == null || !mOnQueryTextListener!!.onQueryTextSubmit(query.toString())) {
-                edittext?.text = query
+                editText?.text = query
             }
         }
     }
 
     // *********************************************************************************************
-    override fun onSaveInstanceState(): Parcelable? {
-        val superState = super.onSaveInstanceState()
-        val ss = SavedState(superState!!)
-        if (edittext?.text!!.isNotEmpty()) {
-            ss.query = edittext?.text
-        }
-        ss.hasFocus = edittext?.hasFocus()!!
-        return ss
-    }
-
     override fun onRestoreInstanceState(state: Parcelable?) {
-        if (state !is SavedState) {
+        if (state !is SavedState?) {
             super.onRestoreInstanceState(state)
             return
         }
-        super.onRestoreInstanceState(state.superState)
-        if (state.hasFocus) {
-            edittext?.requestFocus()
+        super.onRestoreInstanceState(state?.superState)
+        setTextQuery(state?.text, false)
+        if (state?.hasFocus!!) {
+            editText?.requestFocus()
         }
-        if (state.query != null) {
-            setTextQuery(state.query, false)
-        }
-        requestLayout()
+        // TODO requestLayout(),
+        //  FIXME invalidate()
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val ss = super.onSaveInstanceState()?.let { SavedState(it) }
+        ss?.text = getTextQuery()
+        ss?.hasFocus = editText?.hasFocus()!!
+        return ss
     }
 
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return if (!isFocusable) {
             false
         } else {
-            // fixme
-            edittext?.requestFocus(direction, previouslyFocusedRect)!!
+            editText?.requestFocus(direction, previouslyFocusedRect)!!
         }
     }
 
     override fun clearFocus() {
         super.clearFocus()
-        edittext?.clearFocus()
+        editText?.clearFocus()
     }
 
     override fun onClick(view: View?) {
         if (view === mImageViewNavigation) {
             if (mOnNavigationClickListener != null) {
-                mOnNavigationClickListener?.onNavigationClick(edittext?.hasFocus()!!)
+                mOnNavigationClickListener?.onNavigationClick(editText?.hasFocus()!!)
             }
         } else if (view === mImageViewMic) {
             if (mOnMicClickListener != null) {
                 mOnMicClickListener?.onMicClick()
             }
         } else if (view === mImageViewClear) {
-            if (edittext?.text!!.isNotEmpty()) {
-                edittext?.text!!.clear()
+            if (editText?.text!!.isNotEmpty()) {
+                editText?.text!!.clear()
             }
             if (mOnClearClickListener != null) {
                 mOnClearClickListener?.onClearClick()
@@ -682,6 +679,42 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
     interface OnClearClickListener {
 
         fun onClearClick()
+    }
+
+    // *********************************************************************************************
+    class SavedState : AbsSavedState { // View.BaseSavedState
+
+        var text: CharSequence? = null
+        var hasFocus = false
+
+        constructor(superState: Parcelable) : super(superState)
+
+        private constructor(source: Parcel, loader: ClassLoader? = null) : super(source, loader)
+
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            TextUtils.writeToParcel(text, dest, flags)
+            dest.writeInt(if (hasFocus) 1 else 0)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> = object :
+                Parcelable.ClassLoaderCreator<SavedState> {
+                override fun createFromParcel(source: Parcel, loader: ClassLoader): SavedState {
+                    return SavedState(source, loader)
+                }
+
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }
+
     }
 
 }

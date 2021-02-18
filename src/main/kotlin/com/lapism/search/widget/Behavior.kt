@@ -9,7 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lapism.search.internal.MaterialSearchLayout
 
 
-class Behavior<S : MaterialSearchLayout> : CoordinatorLayout.Behavior<S>() {
+open class Behavior<S : MaterialSearchLayout> : CoordinatorLayout.Behavior<S>() {
 
     override fun layoutDependsOn(
         parent: CoordinatorLayout,

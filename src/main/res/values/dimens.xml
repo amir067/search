@@ -30,7 +30,6 @@
     <dimen name="search_view_stroke_width">1dp</dimen>
 
 
-
     <dimen name="open_search_bar_horizontal_margin">16.0dip</dimen>
     <dimen name="open_search_bar_vertical_margin">8.0dip</dimen>
 

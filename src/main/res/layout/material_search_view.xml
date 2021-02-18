@@ -23,7 +23,7 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/search_view_toolbar"
-                style="@style/Widget.GoogleMaterial.OpenSearchView.Toolbar"
+                style="@style/Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipChildren="false">

@@ -27,7 +27,7 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay</item>
     </style>
 
-    <style name="Widget.GoogleMaterial.OpenSearchView.Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
+    <style name="Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>

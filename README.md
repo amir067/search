@@ -165,10 +165,17 @@ Also add android:stateListAnimator="@null" to the AppBarLayout.
 
 ## Changelog
 **3.0.0**
-- added new package search2
-- added new method MaterialSearchView.getNavigationIconImageDrawable()
-- setShadowColor = setScrimColor
-- removed Menu methods
+- updated dependencies
+- added new package search2 >>
+- added classes MaterialSearchBar, MaterialSearchToolbar and MaterialSearchView
+
+- IMPORTANT changes in package search >>
+- class SearchBehavior renamed to Behavior
+- class SearchArrowDrawable renamed to MenuArrowDrawable
+- class SearchLayout renamed to MaterialSearchLayout
+- new method MaterialSearchView.getNavigationIconImageDrawable()
+- renamed MaterialSearchView.setShadowColor() to setScrimColor()
+- attribute search_shadowColor renamed to search_scrimColor
 
 **2.4.1**
 - changed STATE_HAMBURGER to MENU in SearchArrowDrawable

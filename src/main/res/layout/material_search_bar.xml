@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.lapism.search2.searchbar.MaterialSearchToolbar
+        <com.lapism.search2.widget.MaterialSearchToolbar
             android:id="@+id/search_bar_toolbar"
             style="@style/MaterialSearchToolbar"
             android:layout_width="match_parent"

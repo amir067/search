@@ -141,9 +141,9 @@ class MaterialSearchView @JvmOverloads constructor(
             context.resources.getDimensionPixelSize(R.dimen.search_elevation_focus).toFloat()
 
         val left = context.resources.getDimensionPixelSize(R.dimen.search_dp_16)
-        val params = edittext?.layoutParams as LinearLayout.LayoutParams
+        val params = editText?.layoutParams as LinearLayout.LayoutParams
         params.setMargins(left, 0, 0, 0)
-        edittext?.layoutParams = params
+        editText?.layoutParams = params
 
         margins = Margins.FOCUS
         setLayoutHeight(context.resources.getDimensionPixelSize(R.dimen.search_layout_height_focus))
@@ -162,9 +162,9 @@ class MaterialSearchView @JvmOverloads constructor(
         mOnFocusChangeListener?.onFocusChange(false)
         hideKeyboard()
 
-        val params = edittext?.layoutParams as LinearLayout.LayoutParams
+        val params = editText?.layoutParams as LinearLayout.LayoutParams
         params.setMargins(0, 0, 0, 0)
-        edittext?.layoutParams = params
+        editText?.layoutParams = params
 
         setBackgroundStrokeWidth(mStrokeWidth)
         setBackgroundRadius(mRadius)

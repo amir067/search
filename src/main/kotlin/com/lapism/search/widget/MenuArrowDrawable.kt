@@ -1,4 +1,4 @@
-package com.lapism
+package com.lapism.search.widget
 
 import android.animation.ObjectAnimator
 import android.content.Context

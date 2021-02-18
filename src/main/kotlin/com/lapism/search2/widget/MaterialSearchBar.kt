@@ -1,4 +1,4 @@
-package com.lapism.search2.searchbar
+package com.lapism.search2.widget
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -9,11 +9,13 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
 import androidx.annotation.Nullable
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.card.MaterialCardView
 import com.lapism.search.R
 
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class MaterialSearchBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -29,6 +31,7 @@ class MaterialSearchBar @JvmOverloads constructor(
 
         card = findViewById(R.id.search_bar_card)
         toolbar = findViewById(R.id.search_bar_toolbar)
+        toolbar?.isClickable = true
 
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.MaterialSearchBar, defStyleAttr, defStyleRes
@@ -142,7 +145,7 @@ class MaterialSearchBar @JvmOverloads constructor(
         return toolbar
     }
 
-    fun setText(text: CharSequence) {
+    fun setText(text: CharSequence?) {
         toolbar?.setText(text)
     }
 
@@ -150,12 +153,56 @@ class MaterialSearchBar @JvmOverloads constructor(
         return toolbar?.getText()
     }
 
-    fun setHint(hint: CharSequence) {
+    fun setHint(hint: CharSequence?) {
         toolbar?.setHint(hint)
     }
 
     fun getHint(): CharSequence? {
         return toolbar?.getHint()
+    }
+
+    // not inner, static
+    class ScrollingViewBehavior : AppBarLayout.ScrollingViewBehavior {
+
+        private var check = false
+
+        constructor()
+
+        constructor(context: Context?, attributeSet: AttributeSet?) : super(context, attributeSet)
+
+        override fun onLayoutChild(
+            parent: CoordinatorLayout,
+            child: View,
+            layoutDirection: Int
+        ): Boolean {
+            super.onLayoutChild(parent, child, layoutDirection)
+            return true
+        }
+
+        // TODO
+        override fun layoutDependsOn(
+            parent: CoordinatorLayout,
+            child: View,
+            dependency: View
+        ): Boolean {
+            return super.layoutDependsOn(parent, child, dependency)
+        }
+
+        override fun onDependentViewChanged(
+            parent: CoordinatorLayout,
+            child: View,
+            dependency: View
+        ): Boolean {
+            super.onDependentViewChanged(parent, child, dependency)
+            if (!this.check && dependency is AppBarLayout) {
+                this.check = true
+                dependency.setBackgroundColor(0)
+                dependency.elevation = 0.0f
+                dependency.stateListAnimator = null
+            }
+            return false
+        }
+
     }
 
 }
