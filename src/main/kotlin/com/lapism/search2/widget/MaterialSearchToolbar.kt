@@ -6,17 +6,16 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
-import android.widget.TextView
 import androidx.annotation.AttrRes
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.textview.MaterialTextView
 import com.lapism.search.R
-import com.lapism.search2.internal.FocusEditText
 
 
 @Suppress("unused")
 class MaterialSearchToolbar : MaterialToolbar {
 
-    private var textView: TextView? = null
+    private var textView: MaterialTextView? = null
 
     constructor(context: Context) : super(context)
 
@@ -31,6 +30,7 @@ class MaterialSearchToolbar : MaterialToolbar {
     init {
         View.inflate(context, R.layout.material_search_toolbar, this)
 
+        //MaterialColors.getColor()
         textView = findViewById(R.id.search_toolbar_text_view)
     }
 
@@ -80,15 +80,15 @@ class MaterialSearchToolbar : MaterialToolbar {
 
     override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo?) {
         super.onInitializeAccessibilityNodeInfo(info)
-        info?.className = FocusEditText::class.java.canonicalName
+        info?.className = MaterialTextView::class.java.canonicalName
         var h: CharSequence? = getText()
         val isEmpty = TextUtils.isEmpty(h)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            info?.hintText = getHint()
+            info?.hintText = getTextHint()
             info?.isShowingHintText = isEmpty
         }
         if (isEmpty) {
-            h = getHint()
+            h = getTextHint()
         }
         info?.text = h
     }
@@ -101,12 +101,57 @@ class MaterialSearchToolbar : MaterialToolbar {
         return textView?.text
     }
 
-    fun setHint(hint: CharSequence?) {
+    fun setTextHint(hint: CharSequence?) {
         textView?.hint = hint
     }
 
-    fun getHint(): CharSequence? {
+    fun getTextHint(): CharSequence? {
         return textView?.hint
     }
 
 }
+
+/*    public final void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (this.f40605v && (getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) {
+            Resources resources = getResources();
+            int dimensionPixelSize = resources.getDimensionPixelSize(R.dimen.google_opensearchbar_margin_horizontal);
+            int dimensionPixelSize2 = resources.getDimensionPixelSize(R.dimen.google_opensearchbar_margin_vertical);
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
+            int i = marginLayoutParams.leftMargin;
+            if (i == 0) {
+                i = dimensionPixelSize;
+            }
+            marginLayoutParams.leftMargin = i;
+            int i2 = marginLayoutParams.topMargin;
+            if (i2 == 0) {
+                i2 = dimensionPixelSize2;
+            }
+            marginLayoutParams.topMargin = i2;
+            int i3 = marginLayoutParams.rightMargin;
+            if (i3 != 0) {
+                dimensionPixelSize = i3;
+            }
+            marginLayoutParams.rightMargin = dimensionPixelSize;
+            int i4 = marginLayoutParams.bottomMargin;
+            if (i4 != 0) {
+                dimensionPixelSize2 = i4;
+            }
+            marginLayoutParams.bottomMargin = dimensionPixelSize2;
+        }
+    }*/
+
+/*    public final void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(accessibilityNodeInfo);
+        accessibilityNodeInfo.setClassName(EditText.class.getCanonicalName());
+        CharSequence text = this.f40599p.getText();
+        boolean isEmpty = TextUtils.isEmpty(text);
+        if (Build.VERSION.SDK_INT >= 26) {
+            accessibilityNodeInfo.setHintText(this.f40599p.getHint());
+            accessibilityNodeInfo.setShowingHintText(isEmpty);
+        }
+        if (isEmpty) {
+            text = this.f40599p.getHint();
+        }
+        accessibilityNodeInfo.setText(text);
+    }*/

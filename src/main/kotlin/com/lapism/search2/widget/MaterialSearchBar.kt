@@ -31,7 +31,6 @@ class MaterialSearchBar @JvmOverloads constructor(
 
         card = findViewById(R.id.search_bar_card)
         toolbar = findViewById(R.id.search_bar_toolbar)
-        toolbar?.isClickable = true
 
         val a = context.obtainStyledAttributes(
             attrs, R.styleable.MaterialSearchBar, defStyleAttr, defStyleRes
@@ -153,18 +152,16 @@ class MaterialSearchBar @JvmOverloads constructor(
         return toolbar?.getText()
     }
 
-    fun setHint(hint: CharSequence?) {
-        toolbar?.setHint(hint)
+    fun setTextHint(hint: CharSequence?) {
+        toolbar?.setTextHint(hint)
     }
 
-    fun getHint(): CharSequence? {
-        return toolbar?.getHint()
+    fun getTextHint(): CharSequence? {
+        return toolbar?.getTextHint()
     }
 
     // not inner, static
     class ScrollingViewBehavior : AppBarLayout.ScrollingViewBehavior {
-
-        private var check = false
 
         constructor()
 
@@ -179,28 +176,19 @@ class MaterialSearchBar @JvmOverloads constructor(
             return true
         }
 
-        // TODO
         override fun layoutDependsOn(
             parent: CoordinatorLayout,
             child: View,
             dependency: View
         ): Boolean {
-            return super.layoutDependsOn(parent, child, dependency)
-        }
-
-        override fun onDependentViewChanged(
-            parent: CoordinatorLayout,
-            child: View,
-            dependency: View
-        ): Boolean {
-            super.onDependentViewChanged(parent, child, dependency)
-            if (!this.check && dependency is AppBarLayout) {
-                this.check = true
+            return if (dependency is AppBarLayout) {
                 dependency.setBackgroundColor(0)
                 dependency.elevation = 0.0f
                 dependency.stateListAnimator = null
+                true
+            } else {
+                false
             }
-            return false
         }
 
     }

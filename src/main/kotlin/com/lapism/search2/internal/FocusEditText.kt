@@ -32,7 +32,7 @@ class FocusEditText @JvmOverloads constructor(
         text?.clear()
     }
 
-    fun setClearFocusOnBackPressed(clearFocus: Boolean) {
+    fun setTextClearOnBackPressed(clearFocus: Boolean) {
         clearFocusOnBackPressed = clearFocus
     }
 

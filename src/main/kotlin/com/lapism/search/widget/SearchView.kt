@@ -1,5 +1,6 @@
-package com.lapism.search.internal
+package com.lapism.search.widget
 
+import android.animation.LayoutTransition
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.ColorFilter
@@ -20,6 +21,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.annotation.*
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.customview.view.AbsSavedState
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -29,17 +31,15 @@ import com.google.android.material.card.MaterialCardView
 import com.lapism.search.R
 import com.lapism.search2.internal.FocusEditText
 
-/**
- * @hide
- */
-// @RestrictTo(RestrictTo.Scope.LIBRARY) TODO
-@Suppress("unused")
-abstract class MaterialSearchLayout @JvmOverloads constructor(
+
+@Suppress("unused", "MemberVisibilityCanBePrivate")
+open class SearchView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr, defStyleRes), View.OnClickListener {
+) : FrameLayout(context, attrs, defStyleAttr, defStyleRes),
+    CoordinatorLayout.AttachedBehavior, View.OnClickListener {
 
     // *********************************************************************************************
     // Better way than enum class :-)
@@ -71,25 +71,6 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         }
     }
 
-    // *********************************************************************************************
-    private var mImageViewMic: ImageButton? = null
-    protected var mRecyclerView: RecyclerView? = null
-    private var mMaterialCardView: MaterialCardView? = null
-    protected var editText: FocusEditText? = null
-    protected var scrim: View? = null
-    protected var divider: View? = null
-    protected var mViewAnim: View? = null
-    private var mLinearLayout: LinearLayout? = null
-    private var mImageViewNavigation: ImageButton? = null
-    private var mImageViewClear: ImageButton? = null
-
-    protected var mOnFocusChangeListener: OnFocusChangeListener? = null
-    private var mOnQueryTextListener: OnQueryTextListener? = null
-    private var mOnNavigationClickListener: OnNavigationClickListener? = null
-    private var mOnMicClickListener: OnMicClickListener? = null
-    private var mOnClearClickListener: OnClearClickListener? = null
-
-    // *********************************************************************************************
     @NavigationIconSupport
     @get:NavigationIconSupport
     var navigationIconSupport: Int = 0
@@ -130,7 +111,7 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
 
     @Margins
     @get:Margins
-    protected var margins: Int = 0
+    private var margins: Int = 0
         set(@Margins margins) {
             field = margins
 
@@ -175,12 +156,32 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         }
 
     // *********************************************************************************************
-    protected abstract fun addFocus()
-
-    protected abstract fun removeFocus()
+    private var mBehavior: CoordinatorLayout.Behavior<*> = Behavior<SearchView>()
+    private var mTransition: LayoutTransition? = null
+    private var mStrokeWidth: Int = 0
+    private var mRadius: Float = 0f
+    private var mElevation: Float = 0f
+    private var mImageViewMic: ImageButton? = null
+    private var mRecyclerView: RecyclerView? = null
+    private var mMaterialCardView: MaterialCardView? = null
+    private var editText: FocusEditText? = null
+    private var scrim: View? = null
+    private var divider: View? = null
+    private var mViewAnim: View? = null
+    private var mLinearLayout: LinearLayout? = null
+    private var mImageViewNavigation: ImageButton? = null
+    private var mImageViewClear: ImageButton? = null
+    private var mOnFocusChangeListener: OnFocusChangeListener? = null
+    private var mOnQueryTextListener: OnQueryTextListener? = null
+    private var mOnNavigationClickListener: OnNavigationClickListener? = null
+    private var mOnMicClickListener: OnMicClickListener? = null
+    private var mOnClearClickListener: OnClearClickListener? = null
 
     // *********************************************************************************************
-    protected fun init() {
+    init {
+        View.inflate(context, R.layout.search_view, this)
+        setTransition()
+
         mLinearLayout = findViewById(R.id.search_linear_layout)
 
         mImageViewNavigation = findViewById(R.id.search_image_view_navigation)
@@ -200,7 +201,7 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                this@MaterialSearchLayout.onTextChanged(s)
+                this@SearchView.onTextChanged(s)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -245,6 +246,98 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
 
         mMaterialCardView = findViewById(R.id.search_material_card_view)
         margins = Margins.NO_FOCUS
+
+        val a = context.obtainStyledAttributes(
+            attrs, R.styleable.MaterialSearchView, defStyleAttr, defStyleRes
+        )
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_navigationIconSupport)) {
+            navigationIconSupport = a.getInt(
+                R.styleable.MaterialSearchView_search_navigationIconSupport,
+                NavigationIconSupport.NONE
+            )
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_navigationIcon)) {
+            setNavigationIconImageDrawable(a.getDrawable(R.styleable.MaterialSearchView_search_navigationIcon))
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_clearIcon)) {
+            setClearIconImageDrawable(a.getDrawable(R.styleable.MaterialSearchView_search_clearIcon))
+        } else {
+            setClearIconImageDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.search_ic_outline_clear_24
+                )
+            )
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_micIcon)) {
+            setMicIconImageDrawable(a.getDrawable(R.styleable.MaterialSearchView_search_micIcon))
+        } else {
+            setMicIconImageDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.search_ic_outline_mic_none_24
+                )
+            )
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_dividerColor)) {
+            setDividerColor(a.getInt(R.styleable.MaterialSearchView_search_dividerColor, 0))
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_scrimColor)) {
+            setScrimColor(
+                a.getInt(
+                    R.styleable.MaterialSearchView_search_scrimColor,
+                    0
+                )
+            )
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_textHint)) {
+            setTextHint(a.getText(R.styleable.MaterialSearchView_search_textHint))
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_strokeColor)) {
+            setBackgroundStrokeColor(a.getInt(R.styleable.MaterialSearchView_search_strokeColor, 0))
+        }
+
+        if (a.hasValue(R.styleable.MaterialSearchView_search_strokeWidth)) {
+            setBackgroundStrokeWidth(a.getInt(R.styleable.MaterialSearchView_search_strokeWidth, 0))
+        }
+
+        val defaultTransitionDuration =
+            context.resources.getInteger(R.integer.search_animation_duration)
+        setTransitionDuration(
+            a.getInt(
+                R.styleable.MaterialSearchView_search_transitionDuration,
+                defaultTransitionDuration
+            ).toLong()
+        )
+
+        val defaultRadius = context.resources.getDimensionPixelSize(R.dimen.search_radius)
+        setBackgroundRadius(
+            a.getInt(R.styleable.MaterialSearchView_search_radius, defaultRadius).toFloat()
+        )
+
+        val defaultElevation = context.resources.getDimensionPixelSize(R.dimen.search_elevation)
+        elevation =
+            a.getInt(R.styleable.MaterialSearchView_android_elevation, defaultElevation).toFloat()
+
+        val imeOptions = a.getInt(R.styleable.MaterialSearchView_android_imeOptions, -1)
+        if (imeOptions != -1) {
+            setTextImeOptions(imeOptions)
+        }
+
+        val inputType = a.getInt(R.styleable.MaterialSearchView_android_inputType, -1)
+        if (inputType != -1) {
+            setTextInputType(inputType)
+        }
+
+        a.recycle()
 
         isClickable = true
         isFocusable = true
@@ -351,7 +444,9 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         mRecyclerView?.layoutManager = layout
     }
 
-    // only when height == match_parent
+    /**
+     * only when height == match_parent
+     */
     fun setAdapterHasFixedSize(hasFixedSize: Boolean) {
         mRecyclerView?.setHasFixedSize(hasFixedSize)
     }
@@ -455,26 +550,13 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         editText?.setHintTextColor(color)
     }
 
-    fun setClearFocusOnBackPressed(clearFocusOnBackPressed: Boolean) {
-        editText?.setClearFocusOnBackPressed(clearFocusOnBackPressed)
+    fun setTextClearOnBackPressed(clearFocusOnBackPressed: Boolean) {
+        editText?.setTextClearOnBackPressed(clearFocusOnBackPressed)
     }
 
     // *********************************************************************************************
-    override fun setBackgroundColor(@ColorInt color: Int) {
-        mMaterialCardView?.setCardBackgroundColor(color)
-    }
-
     fun setBackgroundColor(@Nullable color: ColorStateList?) {
         mMaterialCardView?.setCardBackgroundColor(color)
-    }
-
-    override fun setElevation(elevation: Float) {
-        mMaterialCardView?.cardElevation = elevation
-        mMaterialCardView?.maxCardElevation = elevation
-    }
-
-    override fun getElevation(): Float {
-        return mMaterialCardView?.elevation!!
     }
 
     fun setBackgroundRadius(radius: Float) {
@@ -563,15 +645,47 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         }
     }
 
+    fun setBehavior(behavior: CoordinatorLayout.Behavior<*>) {
+        mBehavior = behavior
+    }
+
+    fun setTransitionDuration(duration: Long) {
+        mTransition?.setDuration(duration)
+        layoutTransition = mTransition
+    }
+
     // *********************************************************************************************
-    protected fun setLayoutHeight(height: Int) {
+    private fun setTransition() {
+        mTransition = LayoutTransition()
+        mTransition?.enableTransitionType(LayoutTransition.CHANGING)
+        mTransition?.addTransitionListener(object : LayoutTransition.TransitionListener {
+            override fun startTransition(
+                transition: LayoutTransition?,
+                container: ViewGroup?,
+                view: View?,
+                transitionType: Int
+            ) {
+
+            }
+
+            override fun endTransition(
+                transition: LayoutTransition?,
+                container: ViewGroup?,
+                view: View?,
+                transitionType: Int
+            ) {
+
+            }
+        })
+    }
+
+    private fun setLayoutHeight(height: Int) {
         val params = mLinearLayout?.layoutParams
         params?.height = height
         params?.width = ViewGroup.LayoutParams.MATCH_PARENT
         mLinearLayout?.layoutParams = params
     }
 
-    // *********************************************************************************************
     private fun onTextChanged(newText: CharSequence) {
         if (!TextUtils.isEmpty(newText)) {
             mImageViewMic?.visibility = View.GONE
@@ -599,7 +713,76 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
         }
     }
 
+    private fun addFocus() {
+        mOnFocusChangeListener?.onFocusChange(true)
+        showKeyboard()
+
+        mStrokeWidth = getBackgroundStrokeWidth()
+        mRadius = getBackgroundRadius()
+        mElevation = elevation
+
+        setBackgroundStrokeWidth(context.resources.getDimensionPixelSize(R.dimen.search_stroke_width_focus))
+        setBackgroundRadius(resources.getDimensionPixelSize(R.dimen.search_radius_focus).toFloat())
+        elevation =
+            context.resources.getDimensionPixelSize(R.dimen.search_elevation_focus).toFloat()
+
+        val left = context.resources.getDimensionPixelSize(R.dimen.search_dp_16)
+        val params = editText?.layoutParams as LinearLayout.LayoutParams
+        params.setMargins(left, 0, 0, 0)
+        editText?.layoutParams = params
+
+        margins = Margins.FOCUS
+        setLayoutHeight(context.resources.getDimensionPixelSize(R.dimen.search_layout_height_focus))
+
+        scrim?.visibility = View.VISIBLE
+        divider?.visibility = View.VISIBLE
+        mViewAnim?.visibility = View.VISIBLE
+        mRecyclerView?.visibility = View.VISIBLE
+
+        // layoutTransition = null
+    }
+
+    private fun removeFocus() {
+        // layoutTransition = mTransition
+
+        mOnFocusChangeListener?.onFocusChange(false)
+        hideKeyboard()
+
+        val params = editText?.layoutParams as LinearLayout.LayoutParams
+        params.setMargins(0, 0, 0, 0)
+        editText?.layoutParams = params
+
+        setBackgroundStrokeWidth(mStrokeWidth)
+        setBackgroundRadius(mRadius)
+        elevation = mElevation
+
+        setLayoutHeight(context.resources.getDimensionPixelSize(R.dimen.search_layout_height))
+        margins = Margins.NO_FOCUS
+
+        scrim?.visibility = View.GONE
+        mRecyclerView?.visibility = View.GONE
+        mViewAnim?.visibility = View.GONE
+        divider?.visibility = View.GONE
+    }
+
     // *********************************************************************************************
+    override fun setBackgroundColor(@ColorInt color: Int) {
+        mMaterialCardView?.setCardBackgroundColor(color)
+    }
+
+    override fun setElevation(elevation: Float) {
+        mMaterialCardView?.cardElevation = elevation
+        mMaterialCardView?.maxCardElevation = elevation
+    }
+
+    override fun getElevation(): Float {
+        return mMaterialCardView?.elevation!!
+    }
+
+    override fun getBehavior(): CoordinatorLayout.Behavior<*> {
+        return mBehavior
+    }
+
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state !is SavedState?) {
             super.onRestoreInstanceState(state)
@@ -611,7 +794,7 @@ abstract class MaterialSearchLayout @JvmOverloads constructor(
             editText?.requestFocus()
         }
         // TODO requestLayout(),
-        //  FIXME invalidate()
+        // FIXME invalidate()
     }
 
     override fun onSaveInstanceState(): Parcelable? {

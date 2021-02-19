@@ -2,17 +2,20 @@ package com.lapism.search2.widget
 
 import android.content.Context
 import android.graphics.Rect
+import android.graphics.Typeface
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import androidx.annotation.ColorInt
+import androidx.annotation.Nullable
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.customview.view.AbsSavedState
 import com.google.android.material.appbar.AppBarLayout
@@ -77,31 +80,92 @@ class MaterialSearchView @JvmOverloads constructor(
 
         container = findViewById(R.id.search_view_content_container)
 
-        val listener = OnTouchListener { v, event -> true }
-        container?.setOnTouchListener(listener)
+        val left = context.resources.getDimensionPixelSize(R.dimen.search_dp_8)
+        val params = editText?.layoutParams as LinearLayout.LayoutParams
+        params.setMargins(left, 0, 0, 0)
 
-        showKeyboard()
+        editText?.layoutParams = params
+        editText?.isFocusable = true
+        editText?.isFocusableInTouchMode = true
     }
 
     fun getToolbar(): MaterialToolbar? {
         return toolbar
     }
 
-    fun getText(): Editable? {
-        return editText?.text
-    }
-
     fun setText(text: CharSequence?) {
         editText?.setText(text)
     }
 
-    fun addFocus() {
+    @Nullable
+    fun getText(): Editable? {
+        return editText?.text
+    }
+
+    fun setTextTypeface(@Nullable tf: Typeface?) {
+        editText?.typeface = tf
+    }
+
+    fun getTextTypeface(): Typeface? {
+        return editText?.typeface
+    }
+
+    fun setTextInputType(type: Int) {
+        editText?.inputType = type
+    }
+
+    fun getTextInputType(): Int? {
+        return editText?.inputType
+    }
+
+    fun setTextImeOptions(imeOptions: Int) {
+        editText?.imeOptions = imeOptions
+    }
+
+    fun getTextImeOptions(): Int? {
+        return editText?.imeOptions
+    }
+
+    fun setTextHint(hint: CharSequence?) {
+        editText?.hint = hint
+    }
+
+    fun setTextHint(@StringRes resid: Int) {
+        editText?.setHint(resid)
+    }
+
+    fun getTextHint(): CharSequence? {
+        return editText?.hint
+    }
+
+    fun setTextColor(@ColorInt color: Int) {
+        editText?.setTextColor(color)
+    }
+
+    fun setTextSize(size: Float) {
+        editText?.textSize = size
+    }
+
+    fun setTextGravity(gravity: Int) {
+        editText?.gravity = gravity
+    }
+
+    fun setTextHintColor(@ColorInt color: Int) {
+        editText?.setHintTextColor(color)
+    }
+
+    fun setTextClearOnBackPressed(clearFocusOnBackPressed: Boolean) {
+        editText?.setTextClearOnBackPressed(clearFocusOnBackPressed)
+    }
+
+    private fun addFocus() {
         showKeyboard()
     }
 
-    fun removeFocus() {
+    private fun removeFocus() {
         hideKeyboard()
     }
+    //android:clipToPadding="false"
 
     private fun showKeyboard() {
         if (!isInEditMode) {
@@ -125,26 +189,16 @@ class MaterialSearchView @JvmOverloads constructor(
         }
     }
 
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-    }
-
-    // TODO OTHERS
-/*    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        container?.addView(child, index, params)
-    }*/
-
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
-        return if (!isFocusable) {
-            false
-        } else {
-            editText?.requestFocus(direction, previouslyFocusedRect)!!
-        }
+        return editText?.requestFocus(direction, previouslyFocusedRect)!!
     }
 
     override fun clearFocus() {
-        super.clearFocus()
         editText?.clearFocus()
+    }
+
+    override fun getBehavior(): CoordinatorLayout.Behavior<*> {
+        return Behavior()
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
@@ -163,10 +217,7 @@ class MaterialSearchView @JvmOverloads constructor(
         return savedState
     }
 
-    override fun getBehavior(): CoordinatorLayout.Behavior<*> {
-        return Behavior()
-    }
-
+    // NOT INNER CLASS >> STATIC
     class Behavior : CoordinatorLayout.Behavior<MaterialSearchView>() {
 
         override fun layoutDependsOn(
@@ -194,7 +245,6 @@ class MaterialSearchView @JvmOverloads constructor(
 
     }
 
-    // not inner, static
     class SavedState : AbsSavedState {
 
         var text: String? = null

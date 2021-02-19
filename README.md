@@ -166,15 +166,22 @@ Also add android:stateListAnimator="@null" to the AppBarLayout.
 ## Changelog
 **3.0.0**
 - updated dependencies
-- added new package search2 >>
-- added classes MaterialSearchBar, MaterialSearchToolbar and MaterialSearchView
 
-- IMPORTANT changes in package search >>
+- NEWS
+- added class search2.widget.MaterialSearchBar
+- added class search2.widget.MaterialSearchToolbar
+- added class search2.widget.MaterialSearchView
+
+- CHANGES
 - class SearchBehavior renamed to Behavior
+- Behavior class can be add to child classes of SearchView instead of SearchLayout
 - class SearchArrowDrawable renamed to MenuArrowDrawable
-- class SearchLayout renamed to MaterialSearchLayout
-- new method MaterialSearchView.getNavigationIconImageDrawable()
-- renamed MaterialSearchView.setShadowColor() to setScrimColor()
+- abstract class SearchLayout removed
+- MaterialSearchView renamed to SearchView
+- methods moved from SearchLayout to SearchView
+- new method SearchView.getNavigationIconImageDrawable()
+- renamed function SearchView.setShadowColor() to setScrimColor()
+- renamed function SearchView.setClearFocusOnBackPressed() to setTextClearOnBackPressed()
 - attribute search_shadowColor renamed to search_scrimColor
 
 **2.4.1**
