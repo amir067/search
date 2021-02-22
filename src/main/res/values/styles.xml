@@ -1,49 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+        <item name="minWidth">@dimen/mtrl_min_touch_target_size</item>
+    </style>
+
+    <style name="Navigation" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+        <item name="minWidth">@dimen/mtrl_min_touch_target_size</item>
+    </style>
+
     <style name="ThemeOverlay" parent="">
         <item name="actionOverflowButtonStyle">@style/Overflow</item>
         <item name="toolbarNavigationButtonStyle">@style/Navigation</item>
     </style>
 
-    <style name="Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
-    </style>
-
-    <style name="Navigation" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
-    </style>
-
-    <style name="Text" parent="@style/TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?colorOnSurface</item>
-        <item name="android:textColorHint">?attr/colorOnSurface</item>
-    </style>
-
-    <style name="MaterialSearchView" parent="@android:style/Widget">
-        <item name="android:textAppearance">@style/Text</item>
-        <item name="android:elevation">6dp</item>
-        <item name="enforceMaterialTheme">true</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay</item>
-    </style>
-
-    <style name="Toolbar" parent="@style/Widget.MaterialComponents.Toolbar">
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
+    <style name="MaterialSearchToolbar" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:elevation">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
-        <item name="navigationContentDescription">@null</item>
-    </style>
 
-    <style name="MaterialSearchToolbar" parent="@android:style/Widget">
         <item name="android:minHeight">48dp</item>
         <item name="android:paddingStart">4dp</item>
-        <item name="enforceMaterialTheme">true</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay</item>
+
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="maxButtonHeight">48dp</item>
+    </style>
+
+    <style name="SearchViewToolbar" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:elevation">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
-        <item name="navigationContentDescription">@null</item>
-        <item name="android:textAppearance">@style/Text</item>
     </style>
 
 </resources>

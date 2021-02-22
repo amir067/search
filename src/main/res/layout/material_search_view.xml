@@ -19,14 +19,12 @@
             android:id="@+id/search_view_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-            android:background="?attr/colorSurface"
-
+            android:background="?android:attr/colorBackground"
             android:orientation="vertical">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/search_view_toolbar"
-                style="@style/Toolbar"
+                style="@style/SearchViewToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipChildren="false">
@@ -60,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:background="?actionBarItemBackground"
                         android:contentDescription="@null"
-                        android:padding="16dp" />
+                        android:padding="@dimen/search_dp_16" />
 
                 </LinearLayout>
 

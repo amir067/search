@@ -30,7 +30,6 @@ class MaterialSearchToolbar : MaterialToolbar {
     init {
         View.inflate(context, R.layout.material_search_toolbar, this)
 
-        //MaterialColors.getColor()
         textView = findViewById(R.id.search_toolbar_text_view)
     }
 
@@ -54,10 +53,15 @@ class MaterialSearchToolbar : MaterialToolbar {
 
     }
 
+    // todo dep +STYLY PROJIT JAKE JSOU
+    /*dependence
+
+
+    * */
 /*    private fun m32261P(i: Int, i2: Int): Int {
         return if (i == 0) i2 else i
     }
-
+        //MaterialColors.getColor()
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if (layoutParams is MarginLayoutParams) {

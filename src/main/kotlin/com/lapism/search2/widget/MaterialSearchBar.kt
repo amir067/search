@@ -77,6 +77,11 @@ class MaterialSearchBar @JvmOverloads constructor(
             setStrokeWidth(customStrokeWidth)
         }
 
+/*        if (a.hasValue(R.styleable.MaterialSearchBar_android_hint)) {
+            val customStrokeWidth = a.getInt(R.styleable.MaterialSearchBar_bar_strokeWidth, 0)
+            setStrokeWidth(customStrokeWidth)
+        }*/
+
         a.recycle()
     }
 
