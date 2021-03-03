@@ -3,6 +3,6 @@
 
     <string name="material_search_bar_scrolling_view_behavior">com.lapism.search2.widget.MaterialSearchBar$ScrollingViewBehavior</string>
     <string name="material_search_view_behavior">com.lapism.search2.widget.MaterialSearchView$Behavior</string>
-    <string name="search_view_behavior">com.lapism.search.widget.SearchView$Behavior</string>
+    <string name="search_view_behavior">com.lapism.search2.widget.Behavior</string>
 
 </resources>

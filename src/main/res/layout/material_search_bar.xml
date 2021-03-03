@@ -14,4 +14,4 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-</merge>
+</merge><!-- android:animateLayoutChanges="true" -->

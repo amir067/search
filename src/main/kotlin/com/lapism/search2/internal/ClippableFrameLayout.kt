@@ -10,7 +10,7 @@ import android.widget.FrameLayout
  * @hide
  */
 // @RestrictTo(RestrictTo.Scope.LIBRARY) TODO
-class ClippableRoundedCornerLayout @JvmOverloads constructor(
+class ClippableFrameLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,

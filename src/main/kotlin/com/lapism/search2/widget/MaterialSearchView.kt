@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
@@ -27,18 +28,8 @@ import androidx.customview.view.AbsSavedState
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.lapism.search.R
-import com.lapism.search2.internal.ClippableRoundedCornerLayout
+import com.lapism.search2.internal.ClippableFrameLayout
 import com.lapism.search2.internal.FocusEditText
-import com.lapism.search2.internal.TouchObserverFrameLayout
-
-
-
-
-
-
-
-
-
 
 
 @Suppress("unused")
@@ -106,13 +97,13 @@ class MaterialSearchView @JvmOverloads constructor(
 
     // *********************************************************************************************
     private var scrim: View? = null
-    private var root: ClippableRoundedCornerLayout? = null
+    private var root: ClippableFrameLayout? = null
     private var background: LinearLayout? = null
     private var toolbar: MaterialToolbar? = null
     private var editText: FocusEditText? = null
     private var clear: ImageButton? = null
     private var divider: View? = null
-    private var container: TouchObserverFrameLayout? = null
+    private var container: FrameLayout? = null
 
     private var focusListener: OnFocusChangeListener? = null
     private var queryListener: OnQueryTextListener? = null
@@ -198,16 +189,22 @@ class MaterialSearchView @JvmOverloads constructor(
         }
 
         a.recycle()
-        clipChildren = false
-        clipToPadding = false
-        setAnimation()
     }
 
-    private fun setAnimation(){
+    override fun addView(child: View?) {
+        container?.addView(child)
+    }
+
+    private fun setAnimation() {
+        clipChildren = false
+        clipToPadding = false
+
         /*
         android:clipChildren="false"
 android:clipToPadding="false"
 
+
+// znovu vsechny override tridy a parametry, by lazy;,dependence
         * */
         //setClipChildren(false)
         background?.postDelayed({
@@ -232,7 +229,6 @@ android:clipToPadding="false"
             b.setTarget(background)
             b.start()
         }, 500)
-
     }
 
     // *********************************************************************************************
@@ -522,11 +518,13 @@ android:clipToPadding="false"
     }
 
     // *********************************************************************************************
-    // NOT INNER CLASS >> STATIC
+    // NOT INNER CLASS >> STATIC, View.BaseSavedState
     class SavedState : AbsSavedState {
 
         var text: String? = null
         var visibility: Int = View.GONE
+        var textChar: CharSequence? = null
+        var hasFocus = false
 
         constructor(superState: Parcelable) : super(superState)
 
@@ -539,9 +537,12 @@ android:clipToPadding="false"
             super.writeToParcel(dest, flags)
             dest.writeString(text)
             dest.writeInt(visibility)
+            TextUtils.writeToParcel(textChar, dest, flags)
+            dest.writeInt(if (hasFocus) 1 else 0)
         }
 
         companion object {
+
             @JvmField
             val CREATOR: Parcelable.Creator<SavedState> = object :
                 Parcelable.ClassLoaderCreator<SavedState> {
@@ -589,6 +590,3 @@ android:clipToPadding="false"
     }
 
 }
-
-// znovu vsechny override tridy a parametry, by lazy;,dependence
-//android:clipToPadding="false"

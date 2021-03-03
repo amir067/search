@@ -8,7 +8,7 @@
         android:alpha="0.0"
         android:background="?scrimBackground" />
 
-    <com.lapism.search2.internal.ClippableRoundedCornerLayout
+    <com.lapism.search2.internal.ClippableFrameLayout
         android:id="@+id/search_view_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -70,14 +70,36 @@
                 android:layout_height="@dimen/search_view_divider_height"
                 android:background="?android:attr/listDivider" />
 
-            <com.lapism.search2.internal.TouchObserverFrameLayout
+            <FrameLayout
                 android:id="@+id/search_view_content_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
-    </com.lapism.search2.internal.ClippableRoundedCornerLayout>
+    </com.lapism.search2.internal.ClippableFrameLayout>
 
 </merge>
+
+    <!--<
+                <ImageButton
+                android:id="@+id/search_image_view_navigation"
+                android:layout_width="@dimen/search_icon_56"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                android:scaleType="centerInside" />
+
+            <ImageButton
+                android:id="@+id/search_image_view_mic"
+                android:layout_width="@dimen/search_icon_48"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                android:scaleType="centerInside" />
+
+    androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never" />-->

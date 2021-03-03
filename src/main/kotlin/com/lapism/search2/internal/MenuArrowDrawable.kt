@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.lapism.search.R
 
 
+@Suppress("unused")
 class MenuArrowDrawable constructor(context: Context) : DrawerArrowDrawable(context) {
 
     // *********************************************************************************************

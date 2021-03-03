@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
-        <item name="minWidth">@dimen/mtrl_min_touch_target_size</item>
-    </style>
-
-    <style name="Navigation" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
-        <item name="minWidth">@dimen/mtrl_min_touch_target_size</item>
-    </style>
-
-    <style name="ThemeOverlay" parent="">
-        <item name="actionOverflowButtonStyle">@style/Overflow</item>
-        <item name="toolbarNavigationButtonStyle">@style/Navigation</item>
+    <style name="SearchViewToolbar" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="android:elevation">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
     </style>
 
     <style name="MaterialSearchToolbar" parent="@style/Widget.MaterialComponents.Toolbar">
@@ -28,9 +18,19 @@
         <item name="maxButtonHeight">48dp</item>
     </style>
 
-    <style name="SearchViewToolbar" parent="@style/Widget.MaterialComponents.Toolbar">
-        <item name="android:elevation">0dp</item>
-        <item name="contentInsetStartWithNavigation">0dp</item>
+    <style name="ThemeOverlay" parent="">
+        <item name="actionOverflowButtonStyle">@style/Overflow</item>
+        <item name="toolbarNavigationButtonStyle">@style/Navigation</item>
+    </style>
+
+    <style name="Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+        <item name="minWidth">@dimen/mtrl_min_touch_target_size</item>
+    </style>
+
+    <style name="Navigation" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+        <item name="minWidth">@dimen/mtrl_min_touch_target_size</item>
     </style>
 
 </resources>
